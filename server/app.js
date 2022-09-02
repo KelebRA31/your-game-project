@@ -7,7 +7,7 @@ const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bcrypt = require('bcrypt');
 const {
-  User, Sequelize, Pad,
+  User, Category, Question,
 } = require('./db/models');
 
 const app = express();
@@ -46,6 +46,18 @@ app.use(session(sessionConfig));
 app.get('/category', async (req, res) => {
   try {
     const result = await Category.findAll();
+    if (result) {
+      return res.json(result);
+    }
+    throw Error(result);
+  } catch (error) {
+    return res.json(error);
+  }
+});
+
+app.get('/users', async (req, res) => {
+  try {
+    const result = await User.findAll();
     if (result) {
       return res.json(result);
     }
