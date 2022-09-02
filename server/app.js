@@ -68,12 +68,10 @@ app.get('/users', async (req, res) => {
 
 app.get('/game/questions', async (req, res) => {
   try {
-   // const { category } = req.body; // categ_id: category
+    // const { category } = req.body; // categ_id: category
 
-    const result = await Question.findAll({
-      include: [{
-        model: Category,
-      }],
+    const result = await Category.findAll({
+      include: Question,
     });
 
     if (result) {
