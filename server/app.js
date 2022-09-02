@@ -36,3 +36,29 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
+
+app.get('/category', async (req, res) => {
+  try {
+    const result = await Category.findAll();
+    if (result) {
+      return res.json(result);
+    }
+    throw Error(result);
+  } catch (error) {
+    return res.json(error);
+  }
+});
+
+app.get('/game/questions', async (req, res) => {
+  try {
+    const { category } = req.body;
+
+    const result = await Question.findAll({ categ_id: category });
+    if (result) {
+      return res.json(result);
+    }
+    throw Error(result);
+  } catch (error) {
+    return res.json(error);
+  }
+});
