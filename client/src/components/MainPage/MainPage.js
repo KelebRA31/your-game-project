@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import { logout } from '../../redux/action/authActions';
 import AuthUser from '../AuthUser/AuthUsers';
+import Table from '../Table/Table';
 
 export default function MainPage() {
   const { auth } = useSelector((s) => s);
@@ -33,6 +34,7 @@ export default function MainPage() {
           >
             LOGOUT
           </Button>
+          <Table />
         </div>
 
       )}
