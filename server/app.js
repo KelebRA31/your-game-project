@@ -11,6 +11,7 @@ const {
 } = require('./db/models');
 
 const app = express();
+const PORT = 3005;
 
 app.use(cors({
   credentials: true,
@@ -21,6 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(express.static(path.join(process.env.PWD, 'public')));
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
 
 const sessionConfig = {
   name: 'mega-cookie',
@@ -36,3 +41,29 @@ const sessionConfig = {
 };
 
 app.use(session(sessionConfig));
+
+app.post('/signUp', async (req, res) => {
+  const { name, password, email } = req.body;
+  if (name && email && password) {
+    try {
+      const [user] = await User.findOrCreate({
+        where: {
+          name, email, password: await bcrypt.hash(password, 10),
+        },
+      });
+      req.session.userSession = { id: user.id, name: user.name, email: user.email };
+      res.json(req.session.userSession);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'ошибка при регистрации' });
+    }
+  }
+});
+
+app.get('/logOut', async (req, res) => {
+  req.session.destroy();
+  res.clearCookie('mega-cookie');
+  res.sendStatus(200);
+});
+
+app.listen(PORT, () => { console.log('app working on port ', PORT); });
