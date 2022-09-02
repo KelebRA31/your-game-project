@@ -42,7 +42,6 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
-
 app.get('/category', async (req, res) => {
   try {
     const result = await Category.findAll();
@@ -69,9 +68,14 @@ app.get('/users', async (req, res) => {
 
 app.get('/game/questions', async (req, res) => {
   try {
-    const { category } = req.body;
+   // const { category } = req.body; // categ_id: category
 
-    const result = await Question.findAll({ categ_id: category });
+    const result = await Question.findAll({
+      include: [{
+        model: Category,
+      }],
+    });
+
     if (result) {
       return res.json(result);
     }
@@ -105,4 +109,3 @@ app.get('/logOut', async (req, res) => {
 });
 
 app.listen(PORT, () => { console.log('app working on port ', PORT); });
-
