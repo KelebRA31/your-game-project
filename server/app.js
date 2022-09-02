@@ -42,7 +42,6 @@ const sessionConfig = {
 
 app.use(session(sessionConfig));
 
-
 app.get('/category', async (req, res) => {
   try {
     const result = await Category.findAll();
@@ -105,4 +104,3 @@ app.get('/logOut', async (req, res) => {
 });
 
 app.listen(PORT, () => { console.log('app working on port ', PORT); });
-

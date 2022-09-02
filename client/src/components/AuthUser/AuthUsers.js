@@ -98,7 +98,7 @@ export default function AuthUser() {
                 required
                 fullWidth
                 name="name"
-                label="you`re name"
+                label="name"
                 type="text"
                 id="name"
                 autoComplete="name"
